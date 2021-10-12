@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'ByFix Store | Better Like This'),
+    'name' => env('APP_NAME', 'ByFixAPI'),
 
     /*
     |--------------------------------------------------------------------------
