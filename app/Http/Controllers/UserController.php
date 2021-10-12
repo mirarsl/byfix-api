@@ -21,7 +21,7 @@ class UserController extends Controller
         }   
 
         $article = User::where('id',$id)->get();
-        if (is_object($article)) {
+        if (count($article) > 0) {
             $response = response()->json([
                 'data' => $article,
                 'status'=>200,
@@ -173,10 +173,10 @@ class UserController extends Controller
         }else Cache::put('password_attempt/'.$id, 1 , $seconds = 60);
 
         $user = User::where('id',$id)->get();
-        if(is_object($user)){
+        if(count($user) > 0){
             $validator = Validator::make(
                 [
-                    'uyesifre' => $request->get('password'),
+                    'uyesifre' => $request->get('old_password'),
                     'new_uyesifre' => $request->get('new_password'),
                     'new_uyesifre_reply' => $request->get('new_password_reply'), 
                 ],
