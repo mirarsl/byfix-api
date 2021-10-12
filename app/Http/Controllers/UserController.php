@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+use App\Http\Controllers\MailController;
+
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cache;
@@ -85,13 +87,13 @@ class UserController extends Controller
     {
         $ip = $request->ip();
 
-        if(Cache::has('register_attempt/'.$ip)){
-            if(Cache::get('register_attempt/'.$ip) >= 1){
-                return response()->json(['error'=> 'Çok sık kayıt olmayı denediniz.'],404);
-            }else{
-                Cache::increment('register_attempt/'.$ip,1, $seconds = 60);
-            }
-        }else Cache::put('register_attempt/'.$ip, 1 , $seconds = 60);
+        // if(Cache::has('register_attempt/'.$ip)){
+        //     if(Cache::get('register_attempt/'.$ip) >= 1){
+        //         return response()->json(['error'=> 'Çok sık kayıt olmayı denediniz.'],404);
+        //     }else{
+        //         Cache::increment('register_attempt/'.$ip,1, $seconds = 60);
+        //     }
+        // }else Cache::put('register_attempt/'.$ip, 1 , $seconds = 60);
 
 
         $validator = Validator::make(
@@ -156,8 +158,7 @@ class UserController extends Controller
                 'ip' => $ip,
                 'tarih' => date('Y-m-d',time()),
             ]);
-            app(MailController::class)->register($request,$user['eposta'],$user['isim'].' '.$user['soyisim']);
-
+            app(MailController::class)->register($request, $user['eposta'], $user['isim'].' '.$user['soyisim']);
             return response()->json(['data' => $user,'status'=> 200],200);
         }
     }

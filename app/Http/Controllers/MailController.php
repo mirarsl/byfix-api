@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Mail;
+
+
 class MailController extends Controller {
    
    public function havale_siparis_satici(Request $request, $name, $email, $sip, $tel) {
