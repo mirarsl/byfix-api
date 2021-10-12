@@ -13,10 +13,10 @@ class InformationsController extends Controller
 {
     public function index(Request $request)
     {
-        // if(Cache::has('info')){
-        //     $value = Cache::get('info');
-        //     return $value;
-        // }
+        if(Cache::has('info')){
+            $value = Cache::get('info');
+            return $value;
+        }
 
         $information = Informations::select('site_baslik AS baslik','site_slogan AS slogan','site_desc AS aciklama','site_tel AS tel','site_whatsapp AS whatsapp','site_mail AS email','site_gsm AS gsm','adres_bilgisi AS adres')->get();
         $response = response()->json([
