@@ -192,9 +192,9 @@ class SiparisController extends Controller
             unset($req['soyisim']);
             $siparis = Siparis::create($req);
 
-            if($req['odeme_tip'] == 1){
+            if($req['odeme_tip'] == 2){
                 app(MailController::class)->havale_siparis_musteri($request,$req['eposta'],$req['isim'],$req['siparis_no'],$req['toplam_tutar'],$req['tel']);
-            }else if($req['odeme_tip'] == 2){
+            }else if($req['odeme_tip'] == 1){
                 app(MailController::class)->kk_siparis_musteri($request,$req['eposta'],$req['isim'],$req['siparis_no'],$req['toplam_tutar'],$req['tel']);
             }
 
