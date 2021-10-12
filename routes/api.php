@@ -42,9 +42,9 @@ Route::middleware('auth:api_token')->get('products/{id}/comments',[ProductsContr
 
 
 //Hesap Bilgileri
-Route::middleware('auth:api_token')->post('user',[UserController::class, 'login']);
-Route::middleware('auth:api_token')->put('user',[UserController::class, 'register']);
+Route::middleware('auth:api_token')->post('user/login',[UserController::class, 'login']);
 Route::middleware('auth:api_token')->get('user/{id}',[UserController::class, 'show']);
+Route::middleware('auth:api_token')->put('user/register',[UserController::class, 'register']);
 Route::middleware('auth:api_token')->post('password/{id}',[UserController::class, 'password']);
 
 Route::middleware('auth:api_token')->get('user/{id}/siparis',[SiparisController::class, 'siparisler']);
