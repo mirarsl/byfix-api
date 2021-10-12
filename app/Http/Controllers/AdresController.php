@@ -174,6 +174,7 @@ class AdresController extends Controller
         }else{
             $adres = Adres::where('id',$aid)->get();
             if(count($adres) > 0){
+                unset($req["api_token"]);
                 Adres::where('id',$aid)->where('uye_id',$id)->update($req);
                 $new = Adres::where('id',$aid)->where('uye_id',$id)->get();
                 return response()->json(['data'=>$new, "message"=>"Adres başarılı bir şekilde güncellendi.",'status'=>200],200);

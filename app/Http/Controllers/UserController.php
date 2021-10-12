@@ -182,7 +182,7 @@ class UserController extends Controller
                 ],
                 [
                     'uyesifre' => ['required','min:6', function($attribute, $value, $fail) use ($user){
-                        if (md5($value) != $user['uyesifre']) {
+                        if (md5($value) != $user[0]['uyesifre']) {
                             return $fail('Mevcut şifre yanlış girildi.');
                         }
                     }],
@@ -204,10 +204,10 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json(["message"=>$validator->messages(),'status'=>300],300);
             }else{
-                $user->where('id',$user['id'])->update([
+                User::where('id', $id)->update([
                     'uyesifre' => md5($request->get('new_password')),
                 ]);
-                $new = User::where('id',$id);
+                $new = User::where('id',$id)->get();
                 return response()->json(['data' => $new,'status'=> 200],200);
             }
         }else{

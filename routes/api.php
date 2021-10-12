@@ -17,66 +17,66 @@ use Illuminate\Support\Facades\Route;
 
 
 //Site Bilgileri
-Route::get('info',[InformationsController::class, 'index']);
+Route::middleware('auth:api_token')->get('info',[InformationsController::class, 'index']);
 
 //Banka Bilgieri
-Route::get('bank',[BanksController::class, 'index']);
+Route::middleware('auth:api_token')->get('bank',[BanksController::class, 'index']);
 
 //Sabit Sayfalar
-Route::get('pages',[PagesController::class, 'index']);
-Route::get('pages/{id}',[PagesController::class, 'show']);
+Route::middleware('auth:api_token')->get('pages',[PagesController::class, 'index']);
+Route::middleware('auth:api_token')->get('pages/{id}',[PagesController::class, 'show']);
 
 //Sözleşmeler
-Route::get('sozlesme',[SozlesmeController::class, 'index']);
+Route::middleware('auth:api_token')->get('sozlesme',[SozlesmeController::class, 'index']);
 
 //Kategoriler
-Route::get('categories',[CategoriesController::class, 'index']);
-Route::get('categories/{id}',[CategoriesController::class, 'show']);
-Route::get('categories/{id}/products',[CategoriesController::class, 'products']);
+Route::middleware('auth:api_token')->get('categories',[CategoriesController::class, 'index']);
+Route::middleware('auth:api_token')->get('categories/{id}',[CategoriesController::class, 'show']);
+Route::middleware('auth:api_token')->get('categories/{id}/products',[CategoriesController::class, 'products']);
 
 //Ürünler
-Route::get('products',[ProductsController::class, 'index']);
-Route::get('products/{id}',[ProductsController::class, 'show']);
-Route::get('products/{id}/pictures',[ProductsController::class, 'pictures']);
-Route::get('products/{id}/comments',[ProductsController::class, 'comments']);
+Route::middleware('auth:api_token')->get('products',[ProductsController::class, 'index']);
+Route::middleware('auth:api_token')->get('products/{id}',[ProductsController::class, 'show']);
+Route::middleware('auth:api_token')->get('products/{id}/pictures',[ProductsController::class, 'pictures']);
+Route::middleware('auth:api_token')->get('products/{id}/comments',[ProductsController::class, 'comments']);
 
 
 //Hesap Bilgileri
-Route::post('user',[UserController::class, 'login']);
-Route::put('user',[UserController::class, 'register']);
-Route::get('user/{id}',[UserController::class, 'show']);
-Route::post('password/{id}',[UserController::class, 'password']);
+Route::middleware('auth:api_token')->post('user',[UserController::class, 'login']);
+Route::middleware('auth:api_token')->put('user',[UserController::class, 'register']);
+Route::middleware('auth:api_token')->get('user/{id}',[UserController::class, 'show']);
+Route::middleware('auth:api_token')->post('password/{id}',[UserController::class, 'password']);
 
-Route::get('user/{id}/siparis',[SiparisController::class, 'siparisler']);
-Route::get('user/{id}/siparis/{sip}',[SiparisController::class, 'siparis']);
-Route::put('user/{id}/siparis',[SiparisController::class, 'create']);
-Route::put('user/{id}/siparis/{sip}/urun',[SiparisController::class, 'create_product']);
+Route::middleware('auth:api_token')->get('user/{id}/siparis',[SiparisController::class, 'siparisler']);
+Route::middleware('auth:api_token')->get('user/{id}/siparis/{sip}',[SiparisController::class, 'siparis']);
+Route::middleware('auth:api_token')->put('user/{id}/siparis',[SiparisController::class, 'create']);
+Route::middleware('auth:api_token')->put('user/{id}/siparis/{sip}/urun',[SiparisController::class, 'create_product']);
 
 //Kullanıcının adresleri
-Route::get('user/{id}/adres',[AdresController::class, 'index']);
+Route::middleware('auth:api_token')->get('user/{id}/adres',[AdresController::class, 'index']);
 //Adres Detayı
-Route::get('user/{id}/adres/{aid}',[AdresController::class, 'show']);
+Route::middleware('auth:api_token')->get('user/{id}/adres/{aid}',[AdresController::class, 'show']);
 //Oluşturma
-Route::put('user/{id}/adres',[AdresController::class, 'add']);
+Route::middleware('auth:api_token')->put('user/{id}/adres',[AdresController::class, 'add']);
 //Silme
-Route::delete('user/{id}/adres/{aid}',[AdresController::class, 'delete']);
+Route::middleware('auth:api_token')->delete('user/{id}/adres/{aid}',[AdresController::class, 'delete']);
 //Güncelleme
-Route::post('user/{id}/adres/{aid}',[AdresController::class, 'update']);
+Route::middleware('auth:api_token')->post('user/{id}/adres/{aid}',[AdresController::class, 'update']);
 
 
 //Destek Mesajları
-Route::get('user/{id}/destek',[DestekController::class, 'index']);
+Route::middleware('auth:api_token')->get('user/{id}/destek',[DestekController::class, 'index']);
 //Destek Mesajları Detay
-Route::get('user/{id}/destek/{did}',[DestekController::class, 'show']);
+Route::middleware('auth:api_token')->get('user/{id}/destek/{did}',[DestekController::class, 'show']);
 //Destek Mesajı Oluşturma
-Route::put('user/{id}/destek',[DestekController::class, 'create']);
+Route::middleware('auth:api_token')->put('user/{id}/destek',[DestekController::class, 'create']);
 //Destek Mesajı Mesaj Gönderme
-Route::post('user/{id}/destek/{did}',[DestekController::class, 'add']);
+Route::middleware('auth:api_token')->post('user/{id}/destek/{did}',[DestekController::class, 'add']);
 
 //Üye Yorumlar
-Route::get('user/{id}/yorum',[YorumController::class, 'index']);
-Route::get('user/{id}/yorum/{yid}',[YorumController::class, 'show']);
-Route::put('user/{id}/yorum/{pid}',[YorumController::class, 'add']);
+Route::middleware('auth:api_token')->get('user/{id}/yorum',[YorumController::class, 'index']);
+Route::middleware('auth:api_token')->get('user/{id}/yorum/{yid}',[YorumController::class, 'show']);
+Route::middleware('auth:api_token')->put('user/{id}/yorum/{pid}',[YorumController::class, 'add']);
 
 
-Route::get('mail/{email}/{name}',[MailController::class, 'register']);
+Route::middleware('auth:api_token')->get('mail/{email}/{name}',[MailController::class, 'register']);

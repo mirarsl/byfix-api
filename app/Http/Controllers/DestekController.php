@@ -110,7 +110,7 @@ class DestekController extends Controller
     {
         if(Cache::has('destekm/'.$id)){
             if(Cache::get('destekm/'.$id) >= 1){
-                return response()->json(['error'=> 'Çok sık destek talebi oluşturdunuz.'],404);
+                return response()->json(['error'=> 'Çok sık mesaj gönderdiniz.'],404);
             }else{
                 Cache::increment('destekm/'.$id,1, $seconds = 60);
             }
