@@ -39,7 +39,7 @@ class AdresController extends Controller
         $adresler = Adres::where('uye_id',$id)->where('id',$aid)->get();
         if (count($adresler) > 0) {
             $response = response()->json([
-                'data' => $adresler,
+                'data' => $adresler[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);
@@ -177,7 +177,7 @@ class AdresController extends Controller
                 unset($req["api_token"]);
                 Adres::where('id',$aid)->where('uye_id',$id)->update($req);
                 $new = Adres::where('id',$aid)->where('uye_id',$id)->get();
-                return response()->json(['data'=>$new, "message"=>"Adres başarılı bir şekilde güncellendi.",'status'=>200],200);
+                return response()->json(['data'=>$new[0], "message"=>"Adres başarılı bir şekilde güncellendi.",'status'=>200],200);
             }else{
                 return response()->json(["message"=>"Kayıtlı Adres Bulunamadı",'status'=>404],404);
             }

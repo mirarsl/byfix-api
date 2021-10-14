@@ -23,6 +23,7 @@ class CategoriesController extends Controller
         if($request->has('limit')){
             $limit = $request->get('limit');
         }
+
         if(Cache::has('kats/'.$offset.'/'.$limit.'')){
             $value = Cache::get('kats/'.$offset.'/'.$limit.'');
             return $value;
@@ -34,7 +35,8 @@ class CategoriesController extends Controller
             'show' => $limit,
             'created_at' => date('Y-m-d h:i:s',time())
         ],200);
-        Cache::put('kats-'.$offset.'-'.$limit.'',$response, $seconds = 120);
+
+        Cache::put('kats/'.$offset.'/'.$limit.'',$response, $seconds = 120);
         return $response;
     }
 

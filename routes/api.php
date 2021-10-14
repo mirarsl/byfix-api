@@ -10,6 +10,7 @@ Use App\Http\Controllers\SiparisController;
 Use App\Http\Controllers\AdresController;
 Use App\Http\Controllers\DestekController;
 Use App\Http\Controllers\YorumController;
+Use App\Http\Controllers\CampaignController;
 Use App\Http\Controllers\MailController;
 
 use Illuminate\Http\Request;
@@ -29,6 +30,10 @@ Route::middleware('auth:api_token')->get('pages/{id}',[PagesController::class, '
 //Sözleşmeler
 Route::middleware('auth:api_token')->get('sozlesme',[SozlesmeController::class, 'index']);
 
+
+Route::middleware('auth:api_token')->get('kampanya',[CampaignController::class, 'index']);
+Route::middleware('auth:api_token')->get('kampanya/{id}',[CampaignController::class, 'show']);
+
 //Kategoriler
 Route::middleware('auth:api_token')->get('categories',[CategoriesController::class, 'index']);
 Route::middleware('auth:api_token')->get('categories/{id}',[CategoriesController::class, 'show']);
@@ -36,6 +41,8 @@ Route::middleware('auth:api_token')->get('categories/{id}/products',[CategoriesC
 
 //Ürünler
 Route::middleware('auth:api_token')->get('products',[ProductsController::class, 'index']);
+
+Route::middleware('auth:api_token')->get('products/discounts',[ProductsController::class, 'discounts']);
 Route::middleware('auth:api_token')->get('products/{id}',[ProductsController::class, 'show']);
 Route::middleware('auth:api_token')->get('products/{id}/pictures',[ProductsController::class, 'pictures']);
 Route::middleware('auth:api_token')->get('products/{id}/comments',[ProductsController::class, 'comments']);

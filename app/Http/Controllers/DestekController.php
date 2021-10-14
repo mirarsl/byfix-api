@@ -46,7 +46,7 @@ class DestekController extends Controller
 
             $destek[0]['mesajlar'] = $mesajlar;
             $response = response()->json([
-                'data' => $destek,
+                'data' => $destek[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);

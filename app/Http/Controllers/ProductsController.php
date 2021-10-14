@@ -122,6 +122,34 @@ class ProductsController extends Controller
         }
     }
 
+    public function discounts(Request $request)
+    {
+        $offset = 0;
+        $limit = 10;
+
+        if($request->has('offset')){
+            $offset = $request->get('offset');
+        }
+        if($request->has('limit')){
+            $limit = $request->get('limit');
+        }
+
+        if(Cache::has('prodisc/'.$limit.'/'.$offset)){
+            $value = Cache::get('prodisc/'.$limit.'/'.$offset);
+            return $value;
+        }
+        
+        $response = response()->json([
+            'data' => Products::where('durum',1)->where('eski_fiyat',"!=",0)->offset($offset)->limit($limit)->get(),
+            'status'=>200,
+            'start' => $offset,
+            'show' => $limit,
+            'created_at' => date('Y-m-d h:i:s',time())
+        ],200);
+        Cache::put('prodisc/'.$limit.'/'.$offset, $response, $seconds = 300);
+        return $response;
+    }
+
     public function pictures(Request $request, $id)
     {
 
