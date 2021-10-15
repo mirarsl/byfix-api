@@ -80,6 +80,7 @@ class ProductsController extends Controller
             return $value;
         }
 
+
         $article = Products::where('id',$id)->get();
         if (is_object($article)) {
 
@@ -95,7 +96,7 @@ class ProductsController extends Controller
                         $inc = array_merge($inc, array('comments' => $comments));
                     }
                 }
-                $article["includes"] = $inc;
+                $article[0]["includes"] = $inc;
             }
 
             if($request->has("variant")){
@@ -104,7 +105,7 @@ class ProductsController extends Controller
                     foreach ($variants as $key => $value) {
                         $options = ProductVariantOptions::where('varyant_id',$variants[0]['id'])->get();
                         $variants[$key]["options"] = $options;
-                        $article["variants"] = $variants;
+                        $article[0]["variants"] = $variants;
                     }
                 }
             }

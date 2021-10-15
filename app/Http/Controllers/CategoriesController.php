@@ -34,7 +34,7 @@ class CategoriesController extends Controller
             return $value;
         }
 
-        $data = Categories::where('durum',1)->offset($offset)->limit($limit)->get();
+        $data = Categories::where('durum',1)->orderBy('sira','asc')->offset($offset)->limit($limit)->get();
         if($request->has('include')){
             foreach ($data as $key => $value) {
                 $products = Products::where('durum',1)->where('kat_id',$value['id'])->orderBy('tarih','desc')->get();
