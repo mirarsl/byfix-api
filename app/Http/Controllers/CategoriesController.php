@@ -16,6 +16,7 @@ class CategoriesController extends Controller
     {
         $offset = 0;
         $limit = 10;
+        $include = "null";
 
         if($request->has('offset')){
             $offset = $request->get('offset');
@@ -24,19 +25,29 @@ class CategoriesController extends Controller
             $limit = $request->get('limit');
         }
 
-        if(Cache::has('kats/'.$offset.'/'.$limit.'')){
-            $value = Cache::get('kats/'.$offset.'/'.$limit.'');
+        if($request->has('include')){
+            $include = $request->get('include');
+        }
+
+        if(Cache::has('kats/'.$offset.'/'.$limit.'/'.$include)){
+            $value = Cache::get('kats/'.$offset.'/'.$limit.'/'.$include);
             return $value;
         }
+
+        $data = Categories::where('durum',1)->offset($offset)->limit($limit)->get();
+        foreach ($data as $key => $value) {
+            $products = Products::where('kat_id',$value['id'])->get();
+            $data[$key]['products'] = $products;
+        }
         $response = response()->json([
-            'data' => Categories::where('durum',1)->offset($offset)->limit($limit)->get(),
+            'data' => $data,
             'status'=>200,
             'start' => $offset,
             'show' => $limit,
             'created_at' => date('Y-m-d h:i:s',time())
         ],200);
 
-        Cache::put('kats/'.$offset.'/'.$limit.'',$response, $seconds = 120);
+        Cache::put('kats/'.$offset.'/'.$limit.'/'.$include,$response, $seconds = 120);
         return $response;
     }
 
