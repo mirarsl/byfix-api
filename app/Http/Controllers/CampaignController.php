@@ -12,18 +12,35 @@ class CampaignController extends Controller
 {
     public function index(Request $request)
     {
-        if(Cache::has('campaigns')){
-            $value = Cache::get('campaigns');
+        $filters = "all";
+
+        if($request->has('filter')){
+            $filters = $request->get('filter');
+        }
+
+        if(Cache::has('campaigns/'.$filters)){
+            $value = Cache::get('campaigns/'.$filters);
             return $value;
         }
-        $data = Campaign::where('durum',1)->get();
-        $response = response()->json([
-            'data' => $data,
-            'status'=>200,
-            'created_at' => date('Y-m-d h:i:s',time()),
-        ],200);
 
-        Cache::put('campaigns',$response, $seconds = 120);
+        if($filters == 0){
+            $data = Campaign::where('durum',1)->where('icon',0)->get();
+        }else if($filters == 1){
+            $data = Campaign::where('durum',1)->where('icon',1)->get();
+        }else{
+            $data = Campaign::where('durum',1)->get();            
+        }
+
+        if(count($data) > 0){
+            $response = response()->json([
+                'data' => $data,
+                'status'=>200,
+                'created_at' => date('Y-m-d h:i:s',time()),
+            ],200);
+        }else{
+            $response = response()->json(['message' => 'Kayıt Bulunamadı','status' => 404],404);
+        }
+        Cache::put('campaigns/'.$filters,$response, $seconds = 120);
         return $response;
     }
 
