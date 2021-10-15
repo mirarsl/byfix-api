@@ -32,8 +32,9 @@ class ProductsController extends Controller
             $value = Cache::get('pros/'.$limit.'/'.$offset);
             return $value;
         }
+        $data = Products::where('durum',1)->orderBy('tarih','desc')->offset($offset)->limit($limit)->get();
         $response = response()->json([
-            'data' => Products::where('durum',1)->offset($offset)->limit($limit)->get(),
+            'data' => $data,
             'status'=>200,
             'start' => $offset,
             'show' => $limit,
@@ -79,7 +80,7 @@ class ProductsController extends Controller
             return $value;
         }
 
-        $article = Products::find($id);
+        $article = Products::where('id',$id)->get();
         if (is_object($article)) {
 
             if($request->has('include')){
@@ -110,7 +111,7 @@ class ProductsController extends Controller
 
 
             $response = response()->json([
-                'data' => $article,
+                'data' => $article[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);
@@ -138,7 +139,7 @@ class ProductsController extends Controller
             $value = Cache::get('prodisc/'.$limit.'/'.$offset);
             return $value;
         }
-        
+
         $response = response()->json([
             'data' => Products::where('durum',1)->where('eski_fiyat',"!=",0)->offset($offset)->limit($limit)->get(),
             'status'=>200,

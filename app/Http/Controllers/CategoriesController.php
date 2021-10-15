@@ -66,15 +66,15 @@ class CategoriesController extends Controller
             return $value;
         }
 
-        $article = Categories::find($id);
-        if (is_object($article)) {
+        $article = Categories::where('id',$id)->get();
+        if (count($article) > 0) {
             if($include == "products"){
                 $products = Products::where('kat_id',$id)->offset($offset)->limit($limit)->get();
                 $article['include'] = array('products' => $products,'start' => $offset, 'show' => $limit);
             }
 
             $response = response()->json([
-                'data' => $article,
+                'data' => $article[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);

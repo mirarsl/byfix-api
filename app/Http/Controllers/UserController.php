@@ -87,13 +87,13 @@ class UserController extends Controller
     {
         $ip = $request->ip();
 
-        // if(Cache::has('register_attempt/'.$ip)){
-        //     if(Cache::get('register_attempt/'.$ip) >= 1){
-        //         return response()->json(['error'=> 'Çok sık kayıt olmayı denediniz.'],404);
-        //     }else{
-        //         Cache::increment('register_attempt/'.$ip,1, $seconds = 60);
-        //     }
-        // }else Cache::put('register_attempt/'.$ip, 1 , $seconds = 60);
+        if(Cache::has('register_attempt/'.$ip)){
+            if(Cache::get('register_attempt/'.$ip) >= 1){
+                return response()->json(['error'=> 'Çok sık kayıt olmayı denediniz.'],404);
+            }else{
+                Cache::increment('register_attempt/'.$ip,1, $seconds = 60);
+            }
+        }else Cache::put('register_attempt/'.$ip, 1 , $seconds = 60);
 
 
         $validator = Validator::make(

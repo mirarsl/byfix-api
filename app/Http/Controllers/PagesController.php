@@ -31,10 +31,10 @@ class PagesController extends Controller
             $value = Cache::get('page/'.$id.'');
             return $value;
         }
-        $article = Pages::find($id);
+        $article = Pages::where('id',$id)->get();
         if (is_object($article)) {
             $response = response()->json([
-                'data' => $article,
+                'data' => $article[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);
