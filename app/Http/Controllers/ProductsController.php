@@ -75,10 +75,10 @@ class ProductsController extends Controller
             $variant = $request->get("variant");
         }
 
-        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant)){
-            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant);
-            return $value;
-        }
+        // if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant)){
+        //     $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant);
+        //     return $value;
+        // }
 
 
         $article = Products::where('id',$id)->get();
@@ -103,7 +103,7 @@ class ProductsController extends Controller
                 if($variant == 'true'){
                     $variants = ProductVariant::where('urun_id',$id)->get();
                     foreach ($variants as $key => $value) {
-                        $options = ProductVariantOptions::where('varyant_id',$variants[0]['id'])->get();
+                        $options = ProductVariantOptions::where('varyant_id',$variants[$key]['id'])->get();
                         $variants[$key]["options"] = $options;
                         $article[0]["variants"] = $variants;
                     }
