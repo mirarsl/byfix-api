@@ -75,10 +75,10 @@ class ProductsController extends Controller
             $variant = $request->get("variant");
         }
 
-        // if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant)){
-        //     $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant);
-        //     return $value;
-        // }
+        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant)){
+            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant);
+            return $value;
+        }
 
 
         $article = Products::where('id',$id)->get();
