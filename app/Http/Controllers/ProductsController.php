@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\ProductPictures;
+use App\Models\ProductMatchs;
 use App\Models\ProductComments;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantOptions;
@@ -50,6 +51,7 @@ class ProductsController extends Controller
         $offset = "null";
         $limit = "null";
         $variant = "null";
+        $match = "null";
 
         if($request->has('include')){
             $include = $request->get('include');
@@ -75,14 +77,18 @@ class ProductsController extends Controller
             $variant = $request->get("variant");
         }
 
-        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant)){
-            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant);
+        if($request->has("match")){
+            $match = $request->get("match");
+        }
+
+        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match)){
+            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match);
             return $value;
         }
 
 
         $article = Products::where('id',$id)->get();
-        if (is_object($article)) {
+        if (count($article) > 0) {
 
             if($request->has('include')){
                 foreach ($includes as $key => $value) {
@@ -110,13 +116,24 @@ class ProductsController extends Controller
                 }
             }
 
+            if($request->has("match")){
+                if($match == 'true'){
+                    $matchs = ProductMatchs::where('pid',$id)->get();
+                    foreach ($matchs as $key => $value) {
+                        $product = Products::where('id',$value['pids'])->get();
+                        $matchs[$key]['product'] = $product;
+                        $article[0]['matched_products'] = $matchs;
+                    }
+                }
+            }
+
 
             $response = response()->json([
                 'data' => $article[0],
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);
-            Cache::put('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant,$response, $seconds = 300);
+            Cache::put('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match,$response, $seconds = 300);
             return $response;
 
         }else{
