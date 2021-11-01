@@ -98,7 +98,7 @@ class ProductsController extends Controller
                         $inc = array_merge($inc, array('pictures' => $products,'start' => $offset, 'show' => $limit));
 
                     }else if($value == "comments"){
-                        $comments = ProductComments::where('urun_id',$id)->get();
+                        $comments = ProductComments::where('urun_id',$id)->where('onay',1)->get();
                         $inc = array_merge($inc, array('comments' => $comments));
                     }
                 }
