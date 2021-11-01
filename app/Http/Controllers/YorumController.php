@@ -35,12 +35,12 @@ class YorumController extends Controller
 
     public function show($id,$yid)
     {
-        // if(Cache::has('yorum/'.$id.'/'.$yid)){
-        //     $value = Cache::get('yorum/'.$id.'/'.$yid);
-        //     return $value;
-        // }   
+        if(Cache::has('yorum/'.$id.'/'.$yid)){
+            $value = Cache::get('yorum/'.$id.'/'.$yid);
+            return $value;
+        }   
 
-        $yorum = ProductComments::where('uye_id',$id)->where('id',$yid)->where('onay',1)->get();
+        $yorum = ProductComments::where('uye_id',$id)->where('id',$yid)->get();
         if (count($yorum) > 0) {
             $response = response()->json([
                 'data' => $yorum,
@@ -105,9 +105,6 @@ class YorumController extends Controller
             $urun = Products::where('id',$pid)->get();
             if(count($urun) > 0){
                 $comment = ProductComments::create($req);
-                Products::where('id',$pid)->update([
-                    'count'
-                ]);
                 return $comment;
             }else{
                 return response()->json(["message"=>"Ürün Bulunamadı",'status'=>404],404);
