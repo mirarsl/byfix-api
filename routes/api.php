@@ -46,6 +46,8 @@ Route::middleware('auth:api_token')->get('products/discounts',[ProductsControlle
 Route::middleware('auth:api_token')->get('products/{id}',[ProductsController::class, 'show']);
 Route::middleware('auth:api_token')->get('products/{id}/pictures',[ProductsController::class, 'pictures']);
 Route::middleware('auth:api_token')->get('products/{id}/comments',[ProductsController::class, 'comments']);
+Route::middleware('auth:api_token')->get('products/{id}/comments/{cid}',[ProductsController::class, 'comment']);
+Route::middleware('auth:api_token')->post('products/{id}/comments/{cid}',[ProductsController::class, 'commentpoint']);
 
 
 //Hesap Bilgileri

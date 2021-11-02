@@ -81,10 +81,10 @@ class ProductsController extends Controller
             $match = $request->get("match");
         }
 
-        // if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match)){
-        //     $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match);
-        //     return $value;
-        // }
+        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match)){
+            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match);
+            return $value;
+        }
 
 
         $article = Products::where('id',$id)->get();
@@ -98,7 +98,7 @@ class ProductsController extends Controller
                         $inc = array_merge($inc, array('pictures' => $products,'start' => $offset, 'show' => $limit));
 
                     }else if($value == "comments"){
-                        $comments = ProductComments::where('urun_id',$id)->where('onay',1)->orderBy('beneficial','desc')->orderBy('id','desc')->get();
+                        $comments = ProductComments::where('urun_id',$id)->where('onay',1)->orderBy('beneficial','desc')->orderBy('id','asc')->get();
                         $inc = array_merge($inc, array('comments' => $comments));
                     }
                 }
@@ -208,7 +208,7 @@ class ProductsController extends Controller
             $value = Cache::get('proc/'.$id);
             return $value;
         }   
-        $article = ProductComments::where('urun_id',$id)->get();
+        $article = ProductComments::where('urun_id',$id)->orderBy('beneficial','desc')->orderBy('id','asc')->get();
         if (is_object($article) && count($article) > 0) {
             $response = response()->json([
                 'data' => $article,
@@ -219,6 +219,70 @@ class ProductsController extends Controller
             return $response;
         }else{
             return response()->json(['message' => 'Kayıt Bulunamadı','status' => 404],404);
+        }
+    }
+
+    public function comment(Request $request, $id, $cid)
+    {
+
+        if(Cache::has('proc/'.$id.'/'.$cid)){
+            $value = Cache::get('proc/'.$id.'/'.$cid);
+            return $value;
+        }   
+        $article = ProductComments::where('urun_id',$id)->where('id',$cid)->get();
+        if (is_object($article) && count($article) > 0) {
+            $response = response()->json([
+                'data' => $article,
+                'status'=>200,
+                'created_at' => date('Y-m-d h:i:s',time())
+            ],200);
+            Cache::put('proc/'.$id.'/'.$cid, $response, $seconds = 300);
+            return $response;
+        }else{
+            return response()->json(['message' => 'Kayıt Bulunamadı','status' => 404],404);
+        }
+    }
+    public function commentpoint(Request $request, $id, $cid)
+    {
+        if(Cache::has('procom/'.$id.'/'.$cid)){
+            if(Cache::get('procom/'.$id.'/'.$cid) >= 1){
+                return response()->json(['error'=> 'Çok sık bildirim oluşturmayı denediniz.'],404);
+            }else{
+                Cache::increment('procom/'.$id.'/'.$cid,1, $seconds = 30);
+            }
+        }else Cache::put('procom/'.$id.'/'.$cid, 1 , $seconds = 30);
+
+        $req = $request->all();
+        $validator = Validator::make(
+            $req,
+            [
+                'type' => 'required'
+            ],
+            [
+                'type.required' => 'Lütfen Tipi seçiniz',
+            ]
+        );
+        if($validator->fails()){
+            return response()->json(["message"=>$validator->messages(),'status'=>404],404);
+        }else{
+            $article = ProductComments::where('urun_id',$id)->where('id',$cid)->get();
+            if (is_object($article) && count($article) > 0) {
+                if($req['type'] == 0){
+                    $last =  ProductComments::where('urun_id',$id)->where('id',$cid)->increment('beneficial',1);
+                }else{
+                    $last =  ProductComments::where('urun_id',$id)->where('id',$cid)->increment('useless',1);
+                }
+                $article = ProductComments::where('urun_id',$id)->where('id',$cid)->get();
+                $response = response()->json([
+                    'data' => $article,
+                    'status'=>200,
+                    'created_at' => date('Y-m-d h:i:s',time())
+                ],200);
+
+                return $response;
+            }else{
+                return response()->json(['message' => 'Kayıt Bulunamadı','status' => 404],404);
+            }
         }
     }
 }
