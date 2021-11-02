@@ -81,10 +81,10 @@ class ProductsController extends Controller
             $match = $request->get("match");
         }
 
-        if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match)){
-            $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match);
-            return $value;
-        }
+        // if(Cache::has('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match)){
+        //     $value = Cache::get('pro/'.$id.'/'.$include.'/'.$limit.'/'.$offset.'/'.$variant.'/'.$match);
+        //     return $value;
+        // }
 
 
         $article = Products::where('id',$id)->get();
@@ -98,7 +98,7 @@ class ProductsController extends Controller
                         $inc = array_merge($inc, array('pictures' => $products,'start' => $offset, 'show' => $limit));
 
                     }else if($value == "comments"){
-                        $comments = ProductComments::where('urun_id',$id)->where('onay',1)->get();
+                        $comments = ProductComments::where('urun_id',$id)->where('onay',1)->orderBy('beneficial','desc')->orderBy('id','desc')->get();
                         $inc = array_merge($inc, array('comments' => $comments));
                     }
                 }
