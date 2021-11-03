@@ -203,19 +203,27 @@ class ProductsController extends Controller
 
     public function comments(Request $request, $id)
     {
+        $offset = 0;
+        $limit = 10;
+        if($request->has('offset')){
+            $offset = $request->get('offset');
+        }
+        if($request->has('limit')){
+            $limit = $request->get('limit');
+        }
 
-        if(Cache::has('proc/'.$id)){
-            $value = Cache::get('proc/'.$id);
+        if(Cache::has('proc/'.$id.'/'.$limit.'/'.$offset)){
+            $value = Cache::get('proc/'.$id.'/'.$limit.'/'.$offset);
             return $value;
         }   
-        $article = ProductComments::where('urun_id',$id)->orderBy('beneficial','desc')->orderBy('id','asc')->get();
+        $article = ProductComments::where('urun_id',$id)->orderBy('beneficial','desc')->orderBy('id','asc')->offset($offset)->limit($limit)->get();
         if (is_object($article) && count($article) > 0) {
             $response = response()->json([
                 'data' => $article,
                 'status'=>200,
                 'created_at' => date('Y-m-d h:i:s',time())
             ],200);
-            Cache::put('proc/'.$id, $response, $seconds = 300);
+            Cache::put('proc/'.$id.'/'.$limit.'/'.$offset, $response, $seconds = 300);
             return $response;
         }else{
             return response()->json(['message' => 'Kayıt Bulunamadı','status' => 404],404);
