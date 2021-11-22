@@ -113,7 +113,7 @@ class ProductsController extends Controller
                         $options = ProductVariantOptions::where('varyant_id',$variants[$key]['id'])->get();
                         $variants[$key]["options"] = $options;
                         foreach ($options as $key2 => $value2) {
-                            $optionPictures = ProductVariantPictures::where('urun_id',$value2['id'])->get();
+                            $optionPictures = ProductVariantPictures::orderBy('sira','desc')->where('urun_id',$value2['id'])->get();
                             $variants[$key]["options"][$key2]['pictures'] = $optionPictures;
                         }
                         $article[0]["variants"] = $variants;
