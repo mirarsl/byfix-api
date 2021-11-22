@@ -9,6 +9,7 @@ use App\Models\ProductMatchs;
 use App\Models\ProductComments;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantOptions;
+use App\Models\ProductVariantPictures;
 use App\Models\Categories;
 
 use Illuminate\Support\Facades\Validator;
@@ -111,6 +112,10 @@ class ProductsController extends Controller
                     foreach ($variants as $key => $value) {
                         $options = ProductVariantOptions::where('varyant_id',$variants[$key]['id'])->get();
                         $variants[$key]["options"] = $options;
+                        foreach ($options as $key2 => $value2) {
+                            $optionPictures = ProductVariantPictures::where('urun_id',$value2['id'])->get();
+                            $variants[$key]["options"][$key2]['pictures'] = $optionPictures;
+                        }
                         $article[0]["variants"] = $variants;
                     }
                 }
