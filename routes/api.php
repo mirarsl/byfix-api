@@ -6,6 +6,7 @@ Use App\Http\Controllers\BanksController;
 Use App\Http\Controllers\PagesController;
 Use App\Http\Controllers\SozlesmeController;
 Use App\Http\Controllers\UserController;
+Use App\Http\Controllers\SearchController;
 Use App\Http\Controllers\SiparisController;
 Use App\Http\Controllers\AdresController;
 Use App\Http\Controllers\DestekController;
@@ -29,6 +30,9 @@ Route::middleware('auth:api_token')->get('pages/{id}',[PagesController::class, '
 
 //Sözleşmeler
 Route::middleware('auth:api_token')->get('sozlesme',[SozlesmeController::class, 'index']);
+
+
+Route::middleware('auth:api_token')->get('search',[SearchController::class, 'index']);
 
 
 Route::middleware('auth:api_token')->get('kampanya',[CampaignController::class, 'index']);
