@@ -34,10 +34,10 @@ class CategoriesController extends Controller
             return $value;
         }
 
-        $data = Categories::where('durum',1)->orderBy('sira','asc')->offset($offset)->limit($limit)->get();
+        $data = Categories::where('durum',1)->where('dil','tr')->orderBy('sira','asc')->offset($offset)->limit($limit)->get();
         if($request->has('include')){
             foreach ($data as $key => $value) {
-                $products = Products::where('durum',1)->where('kat_id',$value['id'])->orderBy('tarih','desc')->get();
+                $products = Products::where('durum',1)->where('dil','tr')->where('kat_id',$value['id'])->orderBy('tarih','desc')->get();
                 $data[$key]['products'] = $products;
             }
         }
@@ -79,10 +79,10 @@ class CategoriesController extends Controller
             return $value;
         }
 
-        $article = Categories::where('id',$id)->get();
+        $article = Categories::where('id',$id)->where('dil','tr')->get();
         if (count($article) > 0) {
             if($include == "products"){
-                $products = Products::where('kat_id',$id)->offset($offset)->limit($limit)->get();
+                $products = Products::where('kat_id',$id)->where('dil','tr')->offset($offset)->limit($limit)->get();
                 $article['include'] = array('products' => $products,'start' => $offset, 'show' => $limit);
             }
 
@@ -115,7 +115,7 @@ class CategoriesController extends Controller
             return $value;
         }
 
-        $article = Products::where('durum',1)->where('kat_id',$id)->offset($offset)->limit($limit)->get();
+        $article = Products::where('durum',1)->where('dil','tr')->where('kat_id',$id)->offset($offset)->limit($limit)->get();
 
         if (is_object($article) && count($article) > 0) {
             $response = response()->json([

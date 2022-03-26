@@ -17,7 +17,7 @@ class PagesController extends Controller
             return $value;
         }
         $response = response()->json([
-            'data' => Pages::where('durum',1)->get(),
+            'data' => Pages::where('durum',1)->where('dil','tr')->get(),
             'status'=>200,
             'created_at' => date('Y-m-d h:i:s',time())
         ],200);
@@ -31,7 +31,7 @@ class PagesController extends Controller
             $value = Cache::get('page/'.$id.'');
             return $value;
         }
-        $article = Pages::where('id',$id)->get();
+        $article = Pages::where('id',$id)->where('dil','tr')->get();
         if (is_object($article)) {
             $response = response()->json([
                 'data' => $article[0],

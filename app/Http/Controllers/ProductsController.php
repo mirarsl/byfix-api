@@ -34,7 +34,7 @@ class ProductsController extends Controller
             $value = Cache::get('pros/'.$limit.'/'.$offset);
             return $value;
         }
-        $data = Products::where('durum',1)->orderBy('tarih','desc')->offset($offset)->limit($limit)->get();
+        $data = Products::where('durum',1)->where('dil','tr')->orderBy('tarih','desc')->offset($offset)->limit($limit)->get();
         $response = response()->json([
             'data' => $data,
             'status'=>200,
@@ -88,7 +88,7 @@ class ProductsController extends Controller
         }
 
 
-        $article = Products::where('id',$id)->get();
+        $article = Products::where('id',$id)->where('dil','tr')->get();
         if (count($article) > 0) {
 
             if($request->has('include')){
