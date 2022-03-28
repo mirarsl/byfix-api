@@ -24,11 +24,11 @@ class CampaignController extends Controller
         }
 
         if($filters == 0){
-            $data = Campaign::where('durum',1)->where('icon',0)->get();
+            $data = Campaign::where('durum',1)->where('dil','tr')->where('icon',0)->get();
         }else if($filters == 1){
-            $data = Campaign::where('durum',1)->where('icon',1)->get();
+            $data = Campaign::where('durum',1)->where('dil','tr')->where('icon',1)->get();
         }else{
-            $data = Campaign::where('durum',1)->get();            
+            $data = Campaign::where('durum',1)->where('dil','tr')->get();            
         }
 
         if(count($data) > 0){
@@ -51,7 +51,7 @@ class CampaignController extends Controller
             return $value;
         }
 
-        $data = Campaign::where('id',$id)->get();
+        $data = Campaign::where('id',$id)->where('dil','tr')->get();
         if (count($data) > 0) {
             $response = response()->json([
                 'data' => $data[0],
