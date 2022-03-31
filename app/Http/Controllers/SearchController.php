@@ -25,9 +25,14 @@ class SearchController extends Controller
             return $value;
         }
 
-        $products = Products::select()->where('dil','tr')->where('baslik','like','%'.$term.'%')->orWhere('spot','like','%'.$term.'%')->orWhere('icerik','like','%'.$term.'%')->orWhere('tags','like','%'.$term.'%')->addSelect(DB::raw("'product' as type"))->get();
+        $products = Products::select()->where('dil','tr')->where(function($query) use ($term){
+            $query->where('baslik','like','%'.$term.'%')->orWhere('spot','like','%'.$term.'%')->orWhere('icerik','like','%'.$term.'%')->orWhere('tags','like','%'.$term.'%');
 
-        $categories = Categories::select()->where('dil','tr')->where('baslik','like','%'.$term.'%')->where('tags','like','%'.$term.'%')->addSelect(DB::raw("'category' as type"))->get();
+        })->addSelect(DB::raw("'product' as type"))->get();
+
+        $categories = Categories::select()->where('dil','tr')->where(function($query) use ($term){
+            $query->where('baslik','like','%'.$term.'%')->orWhere('tags','like','%'.$term.'%');
+        })->addSelect(DB::raw("'category' as type"))->get();
 
         $data = [
             'products' => $products,
