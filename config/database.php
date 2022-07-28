@@ -46,7 +46,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => env('DB_HOST', 'byfixstore.com'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'byfix_db'),
             'username' => env('DB_USERNAME', 'byfix_user'),
